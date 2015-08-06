@@ -2,3 +2,5 @@
 Capfile
 
 *.rb
+
+php/rootpath.php
