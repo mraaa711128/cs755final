@@ -52,7 +52,7 @@
 				strSuccess += '<li>Your file has been successfully uploaded.</li>';
 				$("#inputUploadSuccess").html('<div class="alert alert-success" role="alert"><ul class="text-left">' + strSuccess + '</ul></div>');
 
-				$.getJSON("/upload/" + files[0]).done(function(data) {
+				$.getJSON("/upload/" + files[0].name).done(function(data) {
 					drawChart(data);
 				}).fail(function(jqxhr, textStatus, error) {
 					var err = textStatus + ", " + error;
