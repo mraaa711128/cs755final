@@ -37,9 +37,9 @@ if(isset($_FILES["upload_file"]))
 		// }
 		// $fileDir = $firstName . "_" . $lastName;
 	
-		// if (file_exists($output_dir . DS . $fileDir) == false) {
-		// 	mkdir($output_dir . DS . $fileDir);
-		// }
+		if (file_exists($output_dir) == false) {
+			mkdir($output_dir);
+		}
 	
 		if(!is_array($_FILES["upload_file"]["name"])) {	//single file
 			$fileName = $_FILES["upload_file"]["name"];
