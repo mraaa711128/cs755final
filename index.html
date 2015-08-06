@@ -48,12 +48,62 @@
 
 				strSuccess += '<li>Your file has been successfully uploaded.</li>';
 				$("#inputUploadSuccess").html('<div class="alert alert-success" role="alert"><ul class="text-left">' + strSuccess + '</ul></div>');
+
+				$.getJSON("/upload/" + files[0]).done(function(data) {
+					drawChart(data);
+				}).fail(function(jqxhr, textStatus, error) {
+					var err = textStatus + ", " + error;
+					console.log( "Request Failed: " + err );
+				});
 			});
 
 			$("#inputFileUpload").on('filebrowse', function(event) {
 				$("#inputUploadSuccess").html('');
 				$("#inputUploadError").html('');
 			});
+
+			function drawChart(arrData) {
+			    $('#container').highcharts({
+			        xAxis: {
+			            type: 'datetime',
+			            dateTimeLabelFormats: {
+			                year: '%Y'
+			            }
+			        },
+			        yAxis: {
+			            type: 'linear',
+			            title: {
+			                text: 'Trade Value ($USD)'
+			            },
+			            labels: {
+			                formatter: function() {    
+			                    result = this.value;
+			                    if (this.value > 1000000000) { result = Math.floor(this.value / 1000000000) + " B"}
+			                    else if (this.value > 1000000) { result = Math.floor(this.value / 1000000) + " M" }
+			                    else if (this.value > 1000) { result = Math.floor(this.value / 1000) + " K" }
+			                    return result;
+			                }
+			            }
+			        },
+			        tooltip: {
+			            xDateFormat: '%Y',
+			            valuePrefix: '$',
+			            pointFormatter: function() {
+			                return this.series.name + ': $' + Highcharts.numberFormat(this.y,0,'.',',');
+			            }
+			        },
+			        series: arrData
+			        // series: [
+			        //     {type: 'column', 
+			        //      name: 'USA', 
+			        //      data: [
+			        //          [1009861200000,42080302610],[1072933200000,50380749334],[1041397200000,46126717376],[1104555600000,55069781610]
+			        //      ]
+			        //     },
+			        // ]
+
+			    });
+			}
 		</script>
 	</body>
 </html>
